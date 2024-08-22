@@ -63,6 +63,8 @@ resource "azurerm_linux_virtual_machine" "main" {
   admin_username        = "adminuser"
   admin_password        = "!ChangeMe1234"
 
+  disable_password_authentication = false
+
   network_interface_ids = [
     azurerm_network_interface.internal.id
   ]
