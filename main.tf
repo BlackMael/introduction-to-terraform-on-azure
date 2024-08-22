@@ -51,3 +51,31 @@ resource "azurerm_network_interface" "internal" {
     private_ip_address_allocation = "Dynamic"
   }
 }
+
+# Create virtual machine
+resource "azurerm_linux_virtual_machine" "main" {
+  name                  = "learn-tf-vm-australiaeast"
+
+  location              = azurerm_resource_group.main.location
+  resource_group_name   = azurerm_resource_group.main.name
+
+  size                  = "Standard_B1s"
+  admin_username        = "adminuser"
+  admin_password        = "!ChangeMe1234"
+
+  network_interface_ids = [
+    azurerm_network_interface.internal.id
+  ]
+
+  os_disk {
+    caching = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "18.04-LTS"
+    version   = "latest"
+  }
+}
